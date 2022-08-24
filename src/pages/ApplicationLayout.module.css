@@ -1,0 +1,10 @@
+.wrapper {
+    height: 100vh;
+    min-height: 100vh;
+}
+
+@media screen and (max-width: 1000px) {
+    .wrapper {
+        height: auto;
+    }
+}

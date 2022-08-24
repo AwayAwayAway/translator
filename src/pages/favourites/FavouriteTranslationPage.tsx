@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styles from './FavouriteTranslationPage.module.css';
 import LocalStorageUtils from '../../shared/utils/localStorageUtils';
-import { Card } from 'primereact/card';
 import { FavouriteTranslation } from '../../models';
+import SavedTranslationCard from '../../shared/components/SavedTranslationCard';
 
 const FavouriteTranslationPage: React.FC = () => {
   const [savedTranslation, setSavedTranslation] = useState<FavouriteTranslation[]>([]);
@@ -29,11 +29,15 @@ const FavouriteTranslationPage: React.FC = () => {
   return (
     <div className={styles.wrapper}>
       {savedTranslation.map((item) => (
-        <Card className={styles.card} key={item.id} title={`${item.originLanguage} > ${item.translatedLanguage}`}>
-          <div>{item.originText}</div>
-          <div>{item.translatedText}</div>
-          <i onClick={() => handleDeleteTranslation(item.id)} className={`pi pi-times-circle ${styles.icon}`}></i>
-        </Card>
+        <SavedTranslationCard
+          key={item.id}
+          id={item.id}
+          originLanguage={item.originLanguage}
+          translatedLanguage={item.translatedLanguage}
+          originText={item.originText}
+          translatedText={item.translatedText}
+          onDelete={handleDeleteTranslation}
+        />
       ))}
       {!savedTranslation.length && <div>No saved Translations</div>}
     </div>

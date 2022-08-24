@@ -3,10 +3,13 @@
   align-items: center;
   padding: 1rem;
   color: white;
-  background-color: var(--primary-background);
+  background-color: var(--primary-light-background);
 }
 
 .wrapper nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-left: 2rem;
   padding-top: .4rem;
 }
@@ -17,4 +20,11 @@
 
 .activeLink {
   color: var(--active-link)
+}
+
+@media screen and (max-width: 1000px) {
+  .wrapper h1 {
+    font-size: 1.5rem;
+  }
+
 }

@@ -7,6 +7,7 @@ import { SelectType, TranslationFormLabel } from '../../shared/e-num';
 import { Skeleton } from 'primereact/skeleton';
 import LocalStorageUtils from '../../shared/utils/localStorageUtils';
 import { useGetLanguagesListQuery } from '../../features/api/translatorApi';
+import { useAppSelector } from '../../app/hooks';
 
 type ThisProps = {
   labelTitle: TranslationFormLabel;
@@ -30,6 +31,7 @@ const TranslationForm: React.FC<ThisProps> = ({
   originText,
 }) => {
   const { data: languageList } = useGetLanguagesListQuery();
+  const isLightMode = useAppSelector((state) => state.style.isLightMode);
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const isTranslateToForm = labelTitle === TranslationFormLabel.TRANSLATE_TO;
 
@@ -62,6 +64,8 @@ const TranslationForm: React.FC<ThisProps> = ({
     <div className={styles.wrapper}>
       <span>{labelTitle}</span>
       <Dropdown
+        id={isLightMode ? '' : 'dark-item'}
+        panelClassName={isLightMode ? '' : styles.darkMode}
         value={selectValue}
         options={languageList}
         placeholder="Choose Language"
@@ -69,7 +73,7 @@ const TranslationForm: React.FC<ThisProps> = ({
       />
       <div className={styles.inputWrapper}>
         {isTextLoading ? (
-          <Skeleton className={styles.skeleton} />
+          <Skeleton className={styles.skeleton} id={isLightMode ? '' : 'dark-item'} />
         ) : (
           <>
             <InputTextarea
@@ -78,16 +82,17 @@ const TranslationForm: React.FC<ThisProps> = ({
               rows={10}
               className={styles.textArea}
               onChange={(v) => onTextAreaChange(v.target.value, isTranslateToForm ? SelectType.TO : SelectType.FROM)}
+              id={isLightMode ? '' : 'dark-item'}
             />
             {isTranslateToForm && (
               <i className={`${isSaved ? 'pi pi-star-fill' : 'pi pi-star'} ${styles.favouriteIcon}`} onClick={handleSaveTranslation} />
             )}
           </>
         )}
-        {translatedTextInfo && translatedTextInfo.detectedLanguage.language !== selectValue && !isTranslateToForm && (
-          <div className={styles.warningMessage}>Please switch keyboard language</div>
-        )}
       </div>
+      {translatedTextInfo && translatedTextInfo.detectedLanguage.language !== selectValue && !isTranslateToForm && (
+        <div className={styles.warningMessage}>Please switch keyboard language</div>
+      )}
     </div>
   );
 };

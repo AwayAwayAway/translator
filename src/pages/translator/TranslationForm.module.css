@@ -1,5 +1,6 @@
 .wrapper {
   display: flex;
+  width: 100%;
   flex-direction: column;
   flex: 1;
 }
@@ -21,7 +22,7 @@
 }
 
 .skeleton {
-  height: calc(100% - .6rem) !important;
+  height: 230px !important;
   margin-top: .3rem;
 }
 
@@ -40,8 +41,14 @@
   cursor: pointer;
 }
 
-@media screen and (max-width: 1000px) {
-  .skeleton {
-    height: 250px !important;
-  }
+.darkMode {
+  background-color: var(--primary-dark-background-item) !important;
+}
+
+.darkMode > div > ul li {
+  color: white !important;
+}
+
+.darkMode > div > ul li:hover {
+  background-color: #533737 !important;
 }

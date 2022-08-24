@@ -1,14 +1,47 @@
 .wrapper {
-  padding: 2rem;
-  margin: 0 5rem;
   display: flex;
-  justify-content: center;
   gap: 2rem;
+  padding: 2rem 5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.switchIcon:hover {
+  cursor: pointer;
+}
+.history {
+  padding-bottom: 1rem
+}
+
+.history, .history i {
+  text-align: center;
+}
+
+.history i {
+  font-size: 2rem;
+}
+
+.history:hover {
+  cursor: pointer;
+}
+
+.historySideBar div:last-child{
+  display: flex;
+  flex-direction: column;
+  gap: 5px
+}
+
+.historySideBar span:hover {
+  cursor: pointer;
+}
+.historySideBar span {
+  margin-bottom: .5rem;
 }
 
 @media screen and (max-width: 1000px) {
   .wrapper {
     flex-direction: column;
-    margin: 0 1rem;
+    padding: 1rem;
+    gap: 1rem;
   }
 }
