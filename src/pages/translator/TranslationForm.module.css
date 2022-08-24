@@ -1,0 +1,41 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.wrapper > span {
+  margin-bottom: .5rem;
+}
+
+.inputWrapper {
+  height: 100%;
+  position: relative;
+}
+
+.textArea {
+  width: 100%;
+  flex: 1;
+  resize: none;
+  margin-top: .3rem !important;
+}
+
+.skeleton {
+  height: calc(100% - .6rem) !important;
+  margin-top: .3rem;
+}
+
+.warningMessage {
+  color: var(--primary-warning);
+}
+
+.favouriteIcon {
+  font-size: 1rem;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.favouriteIcon:hover {
+  cursor: pointer;
+}
