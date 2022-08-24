@@ -1,0 +1,20 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  color: white;
+  background-color: var(--primary-background);
+}
+
+.wrapper nav {
+  margin-left: 2rem;
+  padding-top: .4rem;
+}
+
+.wrapper a:last-child {
+  margin-left: 1rem;
+}
+
+.activeLink {
+  color: var(--active-link)
+}

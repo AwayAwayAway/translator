@@ -1,0 +1,9 @@
+node_modules/**
+
+# Ignore artifacts:
+build/
+coverage/
+
+# Node artifact files
+node_modules/
+dist/
