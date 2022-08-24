@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styles from './TranslatorPage.module.css';
-import { useGetLanguagesListQuery, useSendTextToTranslateMutation } from '../../features/api/translatorApi';
+import { useSendTextToTranslateMutation } from '../../features/api/translatorApi';
 import TranslationForm from './TranslationForm';
 import { SelectType, TranslationFormLabel } from '../../shared/e-num';
 
 const TranslatorPage: React.FC = () => {
-  const { data: languageList } = useGetLanguagesListQuery();
   const [handleTranslate, { data: translatedTextInfo, isLoading: isTextLoading }] = useSendTextToTranslateMutation();
   const [selectedLangFrom, setSelectedLangFrom] = useState<string>('ru');
   const [selectedLangTo, setSelectedLangTo] = useState<string>('en');
@@ -56,7 +55,6 @@ const TranslatorPage: React.FC = () => {
     <div className={styles.wrapper}>
       <TranslationForm
         labelTitle={TranslationFormLabel.TRANSLATE_FROM}
-        initialList={languageList}
         selectValue={selectedLangFrom}
         textAreaValue={translateTextFrom}
         onSelectChange={handleSelectChange}
@@ -65,13 +63,13 @@ const TranslatorPage: React.FC = () => {
       />
       <TranslationForm
         labelTitle={TranslationFormLabel.TRANSLATE_TO}
-        initialList={languageList}
         selectValue={selectedLangTo}
         textAreaValue={translateTextTo}
         onSelectChange={handleSelectChange}
         onTextAreaChange={handleTextAreaChange}
         translatedTextInfo={translatedTextInfo}
         isTextLoading={isTextLoading}
+        originText={translateTextFrom}
       />
     </div>
   );

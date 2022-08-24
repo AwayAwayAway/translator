@@ -1,0 +1,27 @@
+.wrapper {
+  display: flex;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.card {
+  min-width: 12.5rem;
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.icon:hover {
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1000px) {
+  .wrapper {
+    flex-direction: column;
+    margin: 0 1rem;
+  }
+}

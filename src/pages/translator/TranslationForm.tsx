@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import styles from './TranslationForm.module.css';
-import { FavouriteTranslation, SelectItem, TranslatedTextInfo } from '../../models';
+import { TranslatedTextInfo } from '../../models';
 import { Dropdown } from 'primereact/dropdown';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { LocalStorageKey, SelectType, TranslationFormLabel } from '../../shared/e-num';
+import { SelectType, TranslationFormLabel } from '../../shared/e-num';
 import { Skeleton } from 'primereact/skeleton';
+import LocalStorageUtils from '../../shared/utils/localStorageUtils';
+import { useGetLanguagesListQuery } from '../../features/api/translatorApi';
 
 type ThisProps = {
   labelTitle: TranslationFormLabel;
-  initialList: SelectItem[] | undefined;
   selectValue: string;
   textAreaValue: string;
   onSelectChange: (value: string, type: SelectType) => void;
   onTextAreaChange: (value: string, type: SelectType) => void;
   translatedTextInfo: TranslatedTextInfo | undefined;
   isTextLoading?: boolean;
+  originText?: string;
 };
 
 const TranslationForm: React.FC<ThisProps> = ({
-  initialList,
   labelTitle,
   selectValue,
   textAreaValue,
@@ -26,7 +27,9 @@ const TranslationForm: React.FC<ThisProps> = ({
   onSelectChange,
   isTextLoading,
   translatedTextInfo,
+  originText,
 }) => {
+  const { data: languageList } = useGetLanguagesListQuery();
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const isTranslateToForm = labelTitle === TranslationFormLabel.TRANSLATE_TO;
 
@@ -34,41 +37,23 @@ const TranslationForm: React.FC<ThisProps> = ({
     setIsSaved(false);
   }, [translatedTextInfo]);
 
-  const saveNewTextToStorage = (originTranslation: string, id: string, prevTranslation: FavouriteTranslation | {} = {}) => {
-    localStorage.setItem(
-      LocalStorageKey.FAVOURITE,
-      JSON.stringify({
-        ...prevTranslation,
-        [id]: {
-          originText: textAreaValue,
-          translatedText: originTranslation,
-          originLanguage: initialList?.find((item) => item.value === translatedTextInfo?.detectedLanguage.language)?.label || '',
-          translatedLanguage: initialList?.find((item) => item.value === translatedTextInfo?.translations.to)?.label || '',
-        },
-      })
-    );
-  };
-
   const handleSaveTranslation = () => {
     if (!textAreaValue) {
       return;
     }
 
-    const storedTranslation = localStorage.getItem(LocalStorageKey.FAVOURITE);
+    const storedTranslation = LocalStorageUtils.getItem();
 
     if (storedTranslation && translatedTextInfo) {
-      const favouriteTranslation = JSON.parse(storedTranslation);
-
-      if (Object.keys(favouriteTranslation).includes(translatedTextInfo.id)) {
-        delete favouriteTranslation[translatedTextInfo.id];
-        localStorage.setItem(LocalStorageKey.FAVOURITE, JSON.stringify(favouriteTranslation));
+      if (Object.keys(storedTranslation).includes(translatedTextInfo.id)) {
+        LocalStorageUtils.deleteItem(translatedTextInfo.id);
         setIsSaved(false);
       } else {
-        saveNewTextToStorage(translatedTextInfo.translations.text, translatedTextInfo.id, favouriteTranslation);
+        LocalStorageUtils.setNewItem(originText, languageList, translatedTextInfo, storedTranslation);
         setIsSaved(true);
       }
     } else {
-      translatedTextInfo && saveNewTextToStorage(translatedTextInfo.translations.text, translatedTextInfo.id);
+      translatedTextInfo && LocalStorageUtils.setNewItem(originText, languageList, translatedTextInfo);
       setIsSaved(true);
     }
   };
@@ -78,7 +63,7 @@ const TranslationForm: React.FC<ThisProps> = ({
       <span>{labelTitle}</span>
       <Dropdown
         value={selectValue}
-        options={initialList}
+        options={languageList}
         placeholder="Choose Language"
         onChange={(v) => onSelectChange(v.value, isTranslateToForm ? SelectType.TO : SelectType.FROM)}
       />

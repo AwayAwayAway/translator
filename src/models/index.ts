@@ -23,6 +23,7 @@ export type TranslatedTextInfo = {
 };
 
 export type FavouriteTranslation = {
+  id: string;
   originText: string;
   translatedText: string;
   originLanguage: string;
