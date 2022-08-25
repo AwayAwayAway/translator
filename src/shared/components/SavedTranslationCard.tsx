@@ -19,7 +19,7 @@ const SavedTranslationCard: React.FC<ThisProps> = ({ id, originLanguage, transla
     <Card id={isLightMode ? '' : 'dark-item'} className={styles.card} key={id} title={`${originLanguage} > ${translatedLanguage}`}>
       <div>{originText}</div>
       <div>{translatedText}</div>
-      {onDelete && <i onClick={() => onDelete(id)} className={`pi pi-times-circle ${styles.icon}`}></i>}
+      {onDelete ? <i onClick={() => onDelete(id)} className={`pi pi-times-circle ${styles.icon}`}></i> : null}
     </Card>
   );
 };

@@ -72,6 +72,8 @@ const TranslatorPage: React.FC = () => {
   const handleSwitch = () => {
     setTranslateTextTo(translateTextFrom);
     setTranslateTextFrom(translateTextTo);
+    setSelectedLangFrom(selectedLangTo);
+    setSelectedLangTo(selectedLangFrom);
   };
 
   return (
